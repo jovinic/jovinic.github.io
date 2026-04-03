@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eternia - Planejador de Build</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --panel-bg: #1e1e1e;
+            --text-main: #e0e0e0;
+            --text-muted: #888;
+            --accent: #bb86fc;
+            --error: #cf6679;
+            --success: #03dac6;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0; padding: 20px;
+            display: flex; gap: 20px; height: 100vh; box-sizing: border-box;
+        }
+        .panel {
+            background: var(--panel-bg);
+            border-radius: 8px; padding: 20px;
+            display: flex; flex-direction: column;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3); overflow: hidden;
+        }
+        #database-panel { flex: 2; }
+        #build-panel { flex: 1.2; min-width: 350px; background: #181818; border: 1px solid #333; }
+        .upload-area { background: #2a2a2a; border: 2px dashed #444; border-radius: 8px; padding: 15px; text-align: center; margin-bottom: 20px; }
+        .header-stats { display: flex; justify-content: space-between; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #333; }
+        .stat-box { text-align: center; }
+        .stat-value { font-size: 1.5rem; font-weight: bold; color: var(--accent); }
+        .scrollable { flex: 1; overflow-y: auto; padding-right: 10px; }
+        .tree-group { margin-bottom: 25px; border-left: 2px solid #444; padding-left: 15px; }
+        .tree-title { color: var(--accent); font-weight: bold; margin-bottom: 12px; text-transform: uppercase; }
+        .skill-card {
+            background: #2a2a2a; border: 1px solid #444; border-radius: 6px;
+            padding: 12px; margin-bottom: 8px; display: flex;
+            justify-content: space-between; align-items: center;
+            cursor: pointer; transition: 0.1s;
+        }
+        .skill-card:hover:not(.disabled) { border-color: var(--accent); background: #333; }
+        .skill-card.disabled { opacity: 0.15; cursor: not-allowed; filter: grayscale(1); }
+        .skill-type-tag { font-size: 0.7rem; padding: 2px 6px; border-radius: 4px; background: #444; margin-left: 5px; }
+        .btn-remove { background: var(--error); color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 3px; }
+    </style>
+</head>
+<body>
+
+    <div class="panel" id="database-panel">
+        <h2>Grimório de Eternia</h2>
+        <div class="upload-area">
+            <strong>Grimório Online</strong><br>
+            <button id="btn-load-online" onclick="loadDatabaseOnline()" style="margin-top:10px; padding: 8px 15px; cursor:pointer; background: var(--accent); border:none; border-radius:4px; font-weight:bold;">
+                🔄 Carregar Banco de Dados
+            </button>
+            <p id="load-status" style="font-size: 0.7rem; margin-top: 5px; color: var(--text-muted);"></p>
+        </div>
+        <div class="scrollable" id="skills-container"></div>
+    </div>
+
+    <div class="panel" id="build-panel">
+        <h2>Sua Build</h2>
+        <div class="header-stats">
+            <div class="stat-box"><div>Pontos</div><div class="stat-value" id="total-points">0</div></div>
+            <div class="stat-box"><div>Tokens Master</div><div class="stat-value" id="master-tokens">0 / 2</div></div>
+            <div class="stat-box"><div>Barra</div><div class="stat-value" id="combat-bar-count">0 / 10</div></div>
+        </div>
+        <button id="btn-export" onclick="exportBuild()" style="width: 100%; padding: 10px; margin-bottom: 20px; background: var(--accent); color: #121212; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">
+            📋 Exportar Resumo
+        </button>
+        <div class="scrollable" id="build-container"></div>
+    </div>
+
+    <script>
+        const relations = {
+            "Air": ["Tempest", "Sound", "Lightning"],
+            "Water": ["Mist", "Wellspring", "Ice"],
+            "Earth": ["Sand", "Crystal", "Metal"],
+            "Fire": ["Explosion", "Magma", "Plasma"],
+            "Energy": ["Cosmic", "Absorption", "Holy", "Occult"],
+            "Blood": ["Nature", "Poison", "Bone"],
+            "Illusion": ["Time", "Spirit", "Shadow", "Gravity", "Light"],
+            "Physical": ["Armed", "Unarmed", "Ranged"]
+        };
+
+        const physicalSubs = relations["Physical"];
+        let allSkills = [];
+        let build = [];
+
+        function processCSV(csvText) {
+            const lines = csvText.split(/\r?\n/).filter(line => line.trim() !== "");
+            if (lines.length < 2) return;
+            const separator = lines[0].includes(';') ? ';' : ',';
+            allSkills = lines.slice(1).map(line => {
+                const regex = new RegExp(`${separator}(?=(?:(?:[^"]*"){2})*[^"]*$)`);
+                const cols = line.split(regex).map(c => c.replace(/^"|"$/g, '').trim());
+                return { 
+                    elemento: cols[0], 
+                    nome: cols[1], 
+                    categoria: cols[2] ? cols[2].trim() : "", 
+                    custo: parseInt(cols[3]) || 0, 
+                    tipo: cols[4] === "1" ? "Ativa" : "Passiva" 
+                };
+            }).filter(s => s.nome);
+            renderApp();
+        }
+
+        function getBaseTree(subElement) {
+            for (const [base, subs] of Object.entries(relations)) {
+                if (subs.includes(subElement)) return base;
+            }
+            return null;
+        }
+
+        function checkRequirements(skill) {
+            if (build.some(s => s.nome === skill.nome)) return { canBuy: false, reason: "Já possui." };
+
+            const cat = skill.categoria.trim().toUpperCase();
+            const el = skill.elemento.trim().toUpperCase(); // Pega o nome da "árvore"
+            
+            const tokensUsados = build.filter(s => s.categoria.toUpperCase().includes('MASTER')).length;
+            const ptsNoElemento = build.filter(s => s.elemento === skill.elemento).reduce((acc, s) => acc + s.custo, 0);
+            const hasOpenerDesteElemento = build.some(s => s.elemento === skill.elemento && s.categoria.toUpperCase() === 'OPENER');
+
+            // --- REGRA DE EXCEÇÃO PARA RACIAL E COMBAT STYLES ---
+            // Se o ELEMENTO for "RACIAL", "RACIALS" ou "COMBAT STYLES", ignora a trava de Opener
+            const isFreeTree = el.includes('RACIAL') || el.includes('COMBAT STYLES') || cat === 'STANCE';
+
+            if (isFreeTree) {
+                if (cat === 'INTERMEDIATE' || cat === 'MASTER') {
+                    return ptsNoElemento >= 40 ? { canBuy: true } : { canBuy: false, reason: "Requer 40 pts nesta árvore." };
+                }
+                if (cat === 'MASTER STANCES') {
+                    return tokensUsados < 2 ? { canBuy: true } : { canBuy: false, reason: "Limite de tokens Master." };
+                }
+                return { canBuy: true }; // BASIC e STANCE liberados direto
+            }
+
+            // --- REGRAS GERAIS (MAGIAS DE ELEMENTO) ---
+            
+            // 1. MASTER TOKENS (QUALQUER CATEGORIA COM "MASTER")
+            if (cat.includes('MASTER')) {
+                if (tokensUsados >= 2) return { canBuy: false, reason: "Limite de tokens Master atingido." };
+                // Master Stances em árvores comuns não pedem pontos, apenas token e talvez opener? 
+                // Seguindo sua regra: Master Stance não tem requerimento.
+                if (cat === 'MASTER STANCES') return { canBuy: true };
+            }
+
+            // 2. REGRA PHYSICAL
+            if (physicalSubs.includes(skill.elemento)) {
+                if (build.some(s => physicalSubs.includes(s.elemento) && s.elemento !== skill.elemento)) {
+                    return { canBuy: false, reason: "Só é permitido um estilo Physical por build." };
+                }
+            }
+
+            // 3. LÓGICA DE OPENERS (BASE vs SUBTREE)
+            if (cat === 'OPENER') {
+                const baseTree = getBaseTree(skill.elemento);
+                if (!baseTree) return { canBuy: true };
+
+                let hasBaseAccess = build.some(s => s.elemento === baseTree && s.categoria.toUpperCase() === 'OPENER');
+                if (skill.elemento === 'Light' && build.some(s => ['Holy', 'Cosmic'].includes(s.elemento) && s.categoria.toUpperCase() === 'OPENER')) hasBaseAccess = true;
+                if (skill.elemento === 'Shadow' && build.some(s => s.elemento === 'Occult' && s.categoria.toUpperCase() === 'OPENER')) hasBaseAccess = true;
+                if (skill.elemento === 'Spirit' && build.some(s => s.elemento === 'Energy' && s.categoria.toUpperCase() === 'OPENER')) hasBaseAccess = true;
+
+                return hasBaseAccess ? { canBuy: true } : { canBuy: false, reason: `Requer Opener de ${baseTree}.` };
+            }
+
+            // 4. BASIC, INTERMEDIATE E MASTER (TRAVA DE OPENER)
+            if (!hasOpenerDesteElemento) return { canBuy: false, reason: "Requer Opener da árvore." };
+            
+            if (cat === 'BASIC') return { canBuy: true };
+            
+            if (cat === 'INTERMEDIATE' || cat === 'MASTER') {
+                return ptsNoElemento >= 40 ? { canBuy: true } : { canBuy: false, reason: "Requer 40 pontos na árvore." };
+            }
+
+            return { canBuy: true };
+        }
+
+        function toggleActionBar(index) {
+            const skill = build[index];
+            
+            if (skill.tipo !== "Ativa") {
+                alert("Apenas magias Ativas podem ser adicionadas à barra de combate.");
+                return;
+            }
+
+            const ativasNaBarra = build.filter(s => s.naBarra).length;
+
+            if (!skill.naBarra && ativasNaBarra >= 10) {
+                alert("Limite de 10 magias na barra de combate atingido!");
+                return;
+            }
+
+            skill.naBarra = !skill.naBarra;
+            renderApp();
+        }
+
+        function buySkill(skill) {
+            if (checkRequirements(skill).canBuy) {
+                // Inicializa como fora da barra por padrão
+                const newSkill = {...skill, naBarra: false};
+                build.push(newSkill);
+                renderApp();
+            }
+        }
+
+        function removeSkill(index) {
+            build.splice(index, 1);
+            // Re-validação em cascata (mantida a lógica anterior)
+            let mudou;
+            do {
+                mudou = false;
+                for (let i = 0; i < build.length; i++) {
+                    const skillAtual = build[i];
+                    const backup = [...build];
+                    build.splice(i, 1);
+                    if (!checkRequirements(skillAtual).canBuy) { build.splice(i, 1); mudou = true; break; }
+                }
+            } while (mudou);
+            renderApp();
+        }
+
+        function renderApp() {
+            const container = document.getElementById('skills-container');
+            const buildList = document.getElementById('build-container');
+            container.innerHTML = ''; 
+            buildList.innerHTML = '';
+
+            // --- RENDER GRIMÓRIO (ESQUERDA) ---
+            // (Mesma lógica de agrupamento por elemento do passo anterior...)
+            const groupedGrimoire = allSkills.reduce((acc, s) => {
+                const el = s.elemento || "Outros";
+                if (!acc[el]) acc[el] = [];
+                acc[el].push(s);
+                return acc;
+            }, {});
+
+            for (const [el, skills] of Object.entries(groupedGrimoire)) {
+                const section = document.createElement('div');
+                section.className = 'tree-group';
+                section.innerHTML = `<div class="tree-title">${el}</div>`;
+                skills.forEach(s => {
+                    if (build.some(b => b.nome === s.nome)) return;
+                    const req = checkRequirements(s);
+                    const card = document.createElement('div');
+                    card.className = `skill-card ${req.canBuy ? '' : 'disabled'}`;
+                    card.onclick = () => { if(req.canBuy) buySkill(s); };
+                    card.innerHTML = `<div><strong>${s.nome}</strong><br><small>${s.categoria}</small><span class="skill-type-tag">${s.tipo}</span></div><span>${s.custo} pts</span>`;
+                    section.appendChild(card);
+                });
+                if (section.children.length > 1) container.appendChild(section);
+            }
+
+            // --- RENDER BUILD (DIREITA) ---
+            const groupedBuild = build.reduce((acc, s) => {
+                if (!acc[s.elemento]) acc[s.elemento] = [];
+                acc[s.elemento].push(s);
+                return acc;
+            }, {});
+
+            let totalPts = 0, masters = 0, barCount = 0;
+
+            for (const [el, skills] of Object.entries(groupedBuild)) {
+                const buildSection = document.createElement('div');
+                buildSection.className = 'tree-group';
+                const treePts = skills.reduce((sum, s) => sum + s.custo, 0);
+                buildSection.innerHTML = `<div class="tree-title" style="display:flex; justify-content:space-between; font-size: 0.8rem;">
+                    <span>${el}</span><span>${treePts} pts</span>
+                </div>`;
+
+                skills.forEach(s => {
+                    totalPts += s.custo;
+                    if (s.categoria.toUpperCase().includes('MASTER')) masters++;
+                    if (s.naBarra) barCount++;
+
+                    const idx = build.indexOf(s);
+                    const item = document.createElement('div');
+                    item.className = 'skill-card';
+                    
+                    // Botão da Barra de Combate (⚡)
+                    const barBtnColor = s.naBarra ? 'var(--accent)' : '#444';
+                    const barBtnOpacity = s.tipo === 'Ativa' ? '1' : '0.2';
+
+                    item.innerHTML = `
+                        <div style="flex:1">
+                            <strong style="font-size:0.85rem">${s.nome}</strong><br>
+                            <small>${s.categoria} | ${s.tipo}</small>
+                        </div>
+                        <div style="display:flex; gap:5px;">
+                            <button onclick="toggleActionBar(${idx})" style="background:${barBtnColor}; opacity:${barBtnOpacity}; border:none; color:white; border-radius:4px; cursor:pointer; padding: 5px 8px;">⚡</button>
+                            <button class="btn-remove" onclick="removeSkill(${idx})" style="padding: 5px 10px;">X</button>
+                        </div>
+                    `;
+                    buildSection.appendChild(item);
+                });
+                buildList.appendChild(buildSection);
+            }
+
+            document.getElementById('total-points').innerText = totalPts;
+            document.getElementById('master-tokens').innerText = `${masters} / 2`;
+            document.getElementById('combat-bar-count').innerText = `${barCount} / 10`;
+        }
+
+        function exportBuild() {
+            if (build.length === 0) return;
+
+            // Listas para armazenar as informações específicas
+            let selectedRacials = [];
+            let selectedCombatStyles = [];
+            let selectedTrees = [];
+
+            build.forEach(s => {
+                const el = s.elemento.trim();
+                const cat = s.categoria.trim().toUpperCase();
+
+                if (el.toUpperCase().includes('RACIAL')) {
+                    // Para raciais, queremos o nome da habilidade (ex: Nemea Aurora)
+                    selectedRacials.push(s.nome);
+                } else if (el.toUpperCase().includes('COMBAT STYLES') || cat.includes('STANCE')) {
+                    // Para estilos, queremos o nome da Stance (ex: Marksman)
+                    selectedCombatStyles.push(s.nome);
+                } else {
+                    // Para magias comuns, queremos apenas o nome do Elemento/Árvore
+                    selectedTrees.push(el);
+                }
+            });
+
+            // Remover duplicatas (especialmente das Trees, onde você tem várias magias do mesmo elemento)
+            selectedRacials = [...new Set(selectedRacials)];
+            selectedCombatStyles = [...new Set(selectedCombatStyles)];
+            selectedTrees = [...new Set(selectedTrees)];
+
+            const actionBar = build.filter(s => s.naBarra);
+            const totalPts = build.reduce((sum, s) => sum + s.custo, 0);
+
+            // Montagem do texto corrigido
+            let text = `**⚔️ BUILD DE ETERNIA**\n`;
+            text += `> **Pontos Totais:** ${totalPts}\n\n`;
+
+            if (selectedRacials.length > 0) text += `**Racials:** ${selectedRacials.join(', ')}\n`;
+            if (selectedCombatStyles.length > 0) text += `**Combat Styles:** ${selectedCombatStyles.join(', ')}\n`;
+            if (selectedTrees.length > 0) text += `**Trees:** ${selectedTrees.join(' / ')}\n`;
+
+            if (actionBar.length > 0) {
+                text += `\n**[ 🔥 BARRA DE COMBATE (${actionBar.length}/10) ]**\n`;
+                actionBar.forEach(s => {
+                    text += `- \`${s.nome}\`\n`;
+                });
+            }
+
+            text += `\n*Gerado pelo Planejador de Build*`;
+
+            navigator.clipboard.writeText(text).then(() => {
+                const btn = document.getElementById('btn-export');
+                const originalText = btn.innerText;
+                btn.innerText = "✅ Resumo Copiado!";
+                btn.style.background = "var(--success)";
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = "var(--accent)";
+                }, 2000);
+            });
+        }
+
+        async function loadDatabaseOnline() {
+            const status = document.getElementById('load-status');
+            const url = 'https://raw.githubusercontent.com/jovinic/jovinic.github.io/main/skills_database.csv'; // <--- COLE A URL AQUI
+
+            status.innerText = "Buscando dados...";
+            status.style.color = "var(--accent)";
+
+            try {
+                const response = await fetch(url);
+                if (!response.ok) throw new Error("Erro ao acessar o arquivo online.");
+                
+                const csvText = await response.text();
+                processCSV(csvText); // Reutiliza sua função de processamento atual
+                
+                status.innerText = "Banco de dados atualizado!";
+                status.style.color = "var(--success)";
+            } catch (error) {
+                console.error(error);
+                status.innerText = "Erro ao carregar. Verifique a conexão.";
+                status.style.color = "var(--error)";
+            }
+        }
+
+    window.onload = loadDatabaseOnline;
+    </script>
+</body>
+</html>

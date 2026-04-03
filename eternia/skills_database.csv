@@ -1,0 +1,261 @@
+﻿Element;Name;Type;Cost;Active
+Racials;Fae Wings;BASIC;5;0
+Racials;Nemea Aurora;BASIC;10;1
+Racials;Drakanite Wings;BASIC;5;0
+Racials;Scales;BASIC;5;1
+Combat Styles;Marksman;STANCE;5;0
+Combat Styles;Windwalker;MASTER STANCE;5;0
+Combat Styles;Dexterity;MASTER STANCE;5;0
+Combat Styles;Guardian;MASTER STANCE;5;0
+Physical;Physical Attunement;OPENER;10;0
+Physical;Dash Strike;BASIC;10;1
+Physical;Phantom Strikes;BASIC;10;1
+Physical;Muscle Armor;BASIC;10;0
+Physical;Iron Body;INTERMEDIATE;10;1
+Physical;Mighty Blow;MASTER;10;1
+Armed Melee;Sweeping Cleave;OPENER;20;1
+Armed Melee;Dougle Slash;BASIC;10;1
+Armed Melee;Quickdraw;BASIC;10;1
+Armed Melee;Whirling Devish;BASIC;10;1
+Armed Melee;Power Smash;INTERMEDIATE;10;1
+Armed Melee;Fatal Strike;INTERMEDIATE;10;1
+Armed Melee;Precision Slash;MASTER;10;1
+Ranged;Shoot;OPENER;20;1
+Ranged;Disabling Shot;BASIC;10;1
+Ranged;Archer's Poise;BASIC;10;0
+Ranged;Trick Shot;INTERMEDIATE;10;1
+Ranged;Missile Rain;MASTER;10;1
+Unarmed Combat;Lariat;OPENER;20;1
+Unarmed Combat;Flying Kick;BASIC;10;1
+Unarmed Combat;Disarm;BASIC;10;1
+Unarmed Combat;Titan Fist;BASIC;10;1
+Unarmed Combat;Follow-up;INTERMEDIATE;10;1
+Unarmed Combat;Murderous Surge;INTERMEDIATE;10;1
+Unarmed Combat;Spin Throw;INTERMEDIATE;10;1
+Unarmed Combat;Demon Step;MASTER;10;1
+Energy Magic;Ether Attunement;OPENER;10;0
+Energy Magic;Energy Beam;BASIC;10;1
+Energy Magic;Energy Shield;BASIC;10;1
+Energy Magic;Energy Constriction;BASIC;10;1
+Energy Magic;Rapidfire;INTERMEDIATE;10;1
+Energy Magic;Spiral Bomb;INTERMEDIATE;10;1
+Energy Magic;Deflection Palm;MASTER;10;1
+Cosmic Magic;Meteor Dash;OPENER;20;1
+Cosmic Magic;Invigorate;BASIC;10;1
+Cosmic Magic;Star Rain;BASIC;10;1
+Cosmic Magic;Nova Ray;BASIC;10;1
+Cosmic Magic;Astral Ambience;BASIC;10;0
+Cosmic Magic;Starlight Halo;INTERMEDIATE;10;1
+Cosmic Magic;Meteor;INTERMEDIATE;10;1
+Cosmic Magic;Stardust Explosion;INTERMEDIATE;10;1
+Cosmic Magic;Netzach 's Crescent Moon;INTERMEDIATE;10;1
+Cosmic Magic;Cosmic Overdrive;MASTER;10;0
+Holy Magic;Light Orb;OPENER;20;1
+Holy Magic;Smite;BASIC;10;1
+Holy Magic;Mend;BASIC;10;1
+Holy Magic;Holy Ground;BASIC;10;1
+Holy Magic;Righteous BASIC;BASIC;10;0
+Holy Magic;Sanctified Flash;INTERMEDIATE;10;1
+Holy Magic;Lifebomb;INTERMEDIATE;10;1
+Holy Magic;Judgement Beam;MASTER;10;1
+Occult Magic;Shadow Ball;OPENER;20;1
+Occult Magic;Curse;BASIC;10;1
+Occult Magic;Drain Life;BASIC;10;1
+Occult Magic;Desecrated Land;BASIC;10;1
+Occult Magic;Occult Flame;BASIC;10;0
+Occult Magic;Black Binding;INTERMEDIATE;10;1
+Occult Magic;Occult Imp;INTERMEDIATE;10;0
+Occult Magic;Shadow Cannon;MASTER;10;1
+Absorption Magic;Power Siphon;OPENER;20;1
+Absorption Magic;Null Ray;BASIC;10;1
+Absorption Magic;Mana Absorb;BASIC;10;0
+Absorption Magic;Inverse Charge;BASIC;10;1
+Absorption Magic;Flux;INTERMEDIATE;10;1
+Absorption Magic;Aperture;MASTER;10;1
+Illusion Magic;Meta Attunement;OPENER;10;0
+Illusion Magic;Spatial Misdirection;BASIC;10;1
+Illusion Magic;Black Mirage;BASIC;10;1
+Illusion Magic;Hypnosis;BASIC;10;1
+Illusion Magic;Camouflage;BASIC;10;0
+Illusion Magic;Illusion Flurry;INTERMEDIATE;10;1
+Illusion Magic;Prison of Pain;MASTER;10;1
+Time Magic;Decay Blitz;OPENER;20;1
+Time Magic;Spheres of Decay;BASIC;10;1
+Time Magic;Accelerate;BASIC;10;1
+Time Magic;Wither;BASIC;10;1
+Time Magic;Time Beam;BASIC;10;1
+Time Magic;Wound Reversal;INTERMEDIATE;10;1
+Time Magic;Chronos;MASTER;10;0
+Gravity Magic;Compression;OPENER;20;1
+Gravity Magic;Gravity Bomb;BASIC;10;1
+Gravity Magic;Fall: The Weight of 30x Gravity;BASIC;10;1
+Gravity Magic;Expedience;BASIC;10;0
+Gravity Magic;Black Hole;INTERMEDIATE;10;1
+Gravity Magic;Telekinesis;INTERMEDIATE;10;1
+Gravity Magic;Galaxy Nova;MASTER;10;1
+Light Magic;Prism Beam;OPENER;20;1
+Light Magic;Scattered Lights;BASIC;10;1
+Light Magic;Blink;BASIC;10;1
+Light Magic;Irisdescent Veil;BASIC;10;0
+Light Magic;Lightspeed Kick;INTERMEDIATE;10;1
+Light Magic;Light Speed;INTERMEDIATE;10;1
+Shadow Magic;Shadow Claw;OPENER;20;1
+Shadow Magic;Eviscerate;BASIC;10;1
+Shadow Magic;Abyss Pool;BASIC;10;1
+Shadow Magic;Shadow Dive;BASIC;10;1
+Shadow Magic;Umbral Cloak;BASIC;10;0
+Shadow Magic;Shadow Walk;INTERMEDIATE;10;1
+Shadow Magic;Void Cutter;INTERMEDIATE;10;1
+Shadow Magic;Assassin Shroud;MASTER;10;0
+Spirit Magic;Lesser Convocation;OPENER;20;1
+Spirit Magic;Link Transportation;BASIC;10;1
+Spirit Magic;Call Forth;BASIC;10;0
+Spirit Magic;Spirit Meld;INTERMEDIATE;10;1
+Spirit Magic;Spectral Sight;MASTER;10;0
+Earth Magic;Earth Attunement;OPENER;10;0
+Earth Magic;Earthen Shell;BASIC;10;0
+Earth Magic;Earth Bomb;BASIC;10;1
+Earth Magic;Spikes;BASIC;10;1
+Earth Magic;Rock Wall;BASIC;10;1
+Earth Magic;Mudslide;BASIC;10;1
+Earth Magic;Great Mudslide;INTERMEDIATE;10;1
+Earth Magic;Rockslide;INTERMEDIATE;10;1
+Earth Magic;Earthquake;INTERMEDIATE;10;1
+Earth Magic;Tremor;MASTER;10;1
+Sand Magic;Golden Bolt;OPENER;20;0
+Sand Magic;Barrier of Sand;BASIC;10;1
+Sand Magic;Quicksand;BASIC;10;1
+Sand Magic;Sandstorm;BASIC;10;1
+Sand Magic;Binding Desert Burial;INTERMEDIATE;10;1
+Sand Magic;Sand Bomb;INTERMEDIATE;10;1
+Sand Magic;Sand Avalanche;MASTER;10;1
+Metal Magic;Silver Javelin;OPENER;20;1
+Metal Magic;Caltrops Field;BASIC;10;1
+Metal Magic;Shrapnel Missile;BASIC;10;1
+Metal Magic;Crushing Iron;BASIC;10;1
+Metal Magic;Steel Form;BASIC;10;0
+Metal Magic;Titan's Lance;INTERMEDIATE;10;1
+Metal Magic;Iron Grip;INTERMEDIATE;10;1
+Metal Magic;Sword of Heaven;MASTER;10;1
+Crystal Magic;Shardshot;OPENER;20;1
+Crystal Magic;Shimmer Blast;BASIC;10;1
+Crystal Magic;Crystal Wall;BASIC;10;1
+Crystal Magic;Shimmering Javelin;BASIC;10;1
+Crystal Magic;Prismatic Pillars;INTERMEDIATE;10;1
+Crystal Magic;Crystal Coccon;INTERMEDIATE;10;1
+Blood Magic;Bio Attunement;OPENER;10;0
+Blood Magic;Bonds of Blood;PASSIVE;10;0
+Blood Magic;Blood Bomb;BASIC;10;1
+Blood Magic;Blood Sacrifice;BASIC;10;1
+Blood Magic;Blood Whip;BASIC;10;1
+Blood Magic;Blood Pall;BASIC;10;0
+Blood Magic;Hemorrhage;INTERMEDIATE;10;1
+Blood Magic;Blood Vapor;INTERMEDIATE;10;1
+Blood Magic;Severance;INTERMEDIATE;10;1
+Blood Magic;Scarlet Circle;MASTER;10;1
+Nature Magic;Rolling Vines;OPENER;20;1
+Nature Magic;Spores;BASIC;10;1
+Nature Magic;Nature's Command;BASIC;10;0
+Nature Magic;Ingrain;INTERMEDIATE;10;1
+Nature Magic;Yggdrasil: Tree of Life;INTERMEDIATE;10;1
+Nature Magic;Seasonal Shroud;MASTER;10;0
+Poison Magic;Poison Darts;OPENER;20;1
+Poison Magic;Infection;BASIC;10;1
+Poison Magic;Venomous Dash;BASIC;10;1
+Poison Magic;Acid Spray;BASIC;10;1
+Poison Magic;Smog;BASIC;10;1
+Poison Magic;Toxic Shroud;BASIC;10;0
+Poison Magic;Venomous Vortex;INTERMEDIATE;10;1
+Poison Magic;Styx;INTERMEDIATE;10;1
+Poison Magic;Insectomancy;MASTER;10;0
+Bone Magic;Skeletal Lance;OPENER;20;1
+Bone Magic;Spearing Bone Drill;BASIC;10;1
+Bone Magic;Bone Blades;BASIC;10;1
+Bone Magic;Reform;BASIC;10;1
+Bone Magic;Calcium Coil;INTERMEDIATE;10;1
+Bone Magic;Ivory Rupture;INTERMEDIATE;10;1
+Bone Magic;Ribcage;MASTER;10;1
+Wind Magic;Wind Attunement;OPENER;10;0
+Wind Magic;Flurry;BASIC;10;1
+Wind Magic;Whims of Wind;BASIC;10;1
+Wind Magic;Wind Cutter;BASIC;10;1
+Wind Magic;Twister;BASIC;10;1
+Wind Magic;Breezestep;INTERMEDIATE;10;1
+Wind Magic;Shockwave;INTERMEDIATE;10;1
+Wind Magic;Vaccum Vortex;MASTER;10;1
+Lightning Magic;Lightning Bolt;OPENER;20;1
+Lightning Magic;Lightning Burst;BASIC;10;1
+Lightning Magic;Lightning Javelin;BASIC;10;1
+Lightning Magic;Static Charge;BASIC;10;0
+Lightning Magic;Piercing Strike;INTERMEDIATE;10;1
+Lightning Magic;Arc of Devastation;INTERMEDIATE;10;1
+Lightning Magic;Storm's Wrath;MASTER;10;0
+Sound Magic;Sound Strike;OPENER;20;1
+Sound Magic;Sound Burst;BASIC;10;1
+Sound Magic;Cascade;BASIC;10;1
+Sound Magic;Melodic Repose;BASIC;10;1
+Sound Magic;Melody;BASIC;10;0
+Sound Magic;Boom Burst;INTERMEDIATE;10;1
+Tempest Magic;Aeolian Cascade;OPENER;20;1
+Tempest Magic;Silver Surge;BASIC;10;1
+Tempest Magic;White Squall;BASIC;10;1
+Tempest Magic;Devouring Winds;INTERMEDIATE;10;0
+Tempest Magic;Storm;INTERMEDIATE;10;1
+Tempest Magic;Cloudburst;INTERMEDIATE;10;1
+Water Magic;Water Attunement;OPENER;10;0
+Water Magic;Water Beam;BASIC;10;1
+Water Magic;Bubbles;BASIC;10;1
+Water Magic;Ring of Malice;BASIC;10;1
+Water Magic;Ocean's Fury;BASIC;10;0
+Water Magic;Flood;INTERMEDIATE;10;1
+Water Magic;Whirlpool;INTERMEDIATE;10;1
+Water Magic;Tidal Wave;INTERMEDIATE;10;1
+Water Magic;Water Whip;INTERMEDIATE;10;1
+Water Magic;Roar of the Sea Dragon;MASTER;10;1
+Mist Magic;Mistform;OPENER;20;1
+Mist Magic;Mistborne;BASIC;10;1
+Mist Magic;Fog Bank;BASIC;10;1
+Mist Magic;Mist Shroud;BASIC;10;0
+Mist Magic;Advection;INTERMEDIATE;10;1
+Ice Magic;Field of Ice;OPENER;20;1
+Ice Magic;Glacial Lance;BASIC;10;1
+Ice Magic;Winter's Talons;BASIC;10;1
+Ice Magic;Blizzard;BASIC;10;1
+Ice Magic;Ice Flurry;BASIC;10;1
+Ice Magic;Absolute Zero;BASIC;10;0
+Ice Magic;Ice Avalanche;INTERMEDIATE;10;1
+Ice Magic;Wintermute;MASTER;10;0
+Wellspring Magic;Pond;OPENER;20;1
+Wellspring Magic;Cleanse;BASIC;10;1
+Wellspring Magic;Wellspring Aegis;BASIC;10;0
+Wellspring Magic;Sanctuary;INTERMEDIATE;10;1
+Fire Magic;Fire Attunement;OPENER;10;0
+Fire Magic;Fireball;BASIC;10;1
+Fire Magic;Fire Stream;BASIC;10;1
+Fire Magic;Overheat;BASIC;10;1
+Fire Magic;Blazing Wave;BASIC;10;1
+Fire Magic;Flame Shroud;BASIC;10;0
+Fire Magic;Great Fire Wave;INTERMEDIATE;10;1
+Fire Magic;Flame Slide;INTERMEDIATE;10;1
+Fire Magic;Sear;INTERMEDIATE;10;1
+Fire Magic;Primordial Flame;MASTER BASIC;10;0
+Explosion Magic;Bang;OPENER;20;1
+Explosion Magic;Impact Cannon;BASIC;10;1
+Explosion Magic;Inferno;BASIC;10;1
+Explosion Magic;Pyroclasm;BASIC;10;1
+Explosion Magic;Minefield;INTERMEDIATE;10;1
+Explosion Magic;Cinderflare;INTERMEDIATE;10;1
+Explosion Magic;Lion Blast Barrage;MASTER;10;1
+Magma Magic;Magma Slide;OPENER;20;1
+Magma Magic;Lava Pool;BASIC;10;1
+Magma Magic;Volcanic Barrier;BASIC;10;1
+Magma Magic;Molten Shell;BASIC;10;0
+Magma Magic;Magma Fist;MASTER;10;1
+Plasma Magic;Plasma Strike;OPENER;20;1
+Plasma Magic;Plasma Overcharge;BASIC;10;1
+Plasma Magic;Plasma Shroud;BASIC;10;0
+Plasma Magic;Invection Vortex;INTERMEDIATE;10;1
+Plasma Magic;Plasma Leap;INTERMEDIATE;10;1
+Plasma Magic;Tesla;INTERMEDIATE;10;1
+Plasma Magic;Cauterize;MASTER;10;1
+;;;2825;207
